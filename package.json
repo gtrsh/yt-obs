@@ -6,6 +6,9 @@
     "apps/*",
     "packages/*"
   ],
+  "prisma": {
+    "schema": "packages/store-sql/prisma"
+  },
   "devDependencies": {
     "prisma": "^6.15.0",
     "turbo": "^2.5.6"
