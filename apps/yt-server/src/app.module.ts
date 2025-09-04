@@ -1,9 +1,11 @@
+import { db } from '@yt-obs/store-sql'
+import { User } from '@yt-obs/store-sql'
 import { Module, Injectable, Controller, Get } from '@nestjs/common'
 
 @Injectable()
 export class AppService {
-  getHello(): unknown {
-    return { hello: 'world from yt-dlp-api', type: [1, 2, 3, 42, 'a', 'x'] }
+  async getHello(): Promise<User[]> {
+    return db.user.findMany({})
   }
 }
 
