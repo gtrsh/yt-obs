@@ -1,0 +1,7 @@
+{
+  "extends": "./yt-obs-base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "./yt-obs-base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  }
+}

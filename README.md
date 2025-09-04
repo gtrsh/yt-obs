@@ -6,11 +6,5 @@ __  ________    ____  __
 /_/ /_/      \____/_.___/____/\___/_/    |___/\___/_/     
 
 Tool for observe youtube channels for new videos and download them
-Built with clojure and yt-dlp
+Built with ts/node.js/react and yt-dlp
 ```
-
-## Верхнеуровневое описание системы
-
-Приложение имеет клиент-серверную архитектуру. Сервер написан на языке clojure и реализует rest-api для клиентского приложения (веб-админка на react+vite), для получения данных и файлов от сервиса youtube используется приложение yt-dlp вызываемое сервером при помощи встроенной библиотеки `clojure.java.shell`. Для хранения данных используются базы данных redis/postgresql. Для хранения файлов используется s3-совместимый сервер minIO.
-
-![Image](https://github.com/user-attachments/assets/cb27e743-d43d-4199-8ae9-3d35279e72f5)
