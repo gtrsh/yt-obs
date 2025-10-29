@@ -1,0 +1,8 @@
+{
+  "name": "yt-obs",
+  "version": "0.0.1",
+  "scripts": {},
+  "workspaces": [
+    "packages/*"
+  ]
+}
