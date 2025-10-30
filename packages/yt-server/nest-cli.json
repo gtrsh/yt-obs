@@ -1,0 +1,11 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "watchOptions": {
+    "preserveWatchOutput": true,
+    "gracefulShutdown": true
+  },
+  "compilerOptions": {
+    "deleteOutDir": true
+  }
+}

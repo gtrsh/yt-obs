@@ -1,4 +1,25 @@
 {
   "name": "@yt-obs/yt-server",
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "nest start",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.8",
+    "@nestjs/core": "^11.1.8",
+    "@nestjs/platform-fastify": "^11.1.8",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
+    "@nestjs/schematics": "^11.0.9",
+    "@nestjs/testing": "^11.1.8",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
 }
