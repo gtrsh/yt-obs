@@ -1,0 +1,7 @@
+{
+  "extends": "@yt-obs/config-typescript/tsconfig.server.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./"
+  }
+}

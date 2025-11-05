@@ -1,0 +1,13 @@
+{
+  "name": "@yt-obs/store-sql",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "prisma": "^6.18.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0"
+  }
+}
