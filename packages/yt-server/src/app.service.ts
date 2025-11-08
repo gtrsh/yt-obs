@@ -1,16 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { PrismaClient, User } from '@yt-obs/store-sql'
+import { PrismaService } from './core/index.js'
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name)
 
-  async getHello(): Promise<User[]> {
-    const db = new PrismaClient()
-    const data = await db.user.findMany({})
-    await db.$disconnect()
+  constructor(
+    private prismaService: PrismaService
+  ) {}
+
+  async getHello(): Promise<string[]> {
 
     this.logger.log('service log')
-    return data
+    return ['service', 'response']
   }
 }
