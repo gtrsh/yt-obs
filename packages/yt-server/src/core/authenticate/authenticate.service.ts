@@ -1,12 +1,15 @@
 import bcrypt from 'bcrypt'
 
 import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+
 import { PrismaService } from '../index.js'
 
 @Injectable()
 export class AuthenticateService {
   constructor(
     private prismaService: PrismaService,
+    private jwtService: JwtService,
   ) {}
 
   async login(username: string, password: string) {
@@ -18,13 +21,16 @@ export class AuthenticateService {
       throw new UnauthorizedException()
     }
 
-    const { password: passwordHash, ...userData } = user
+    const { password: passwordHash, id, ...userData } = user
     const compareUserPass = await bcrypt.compare(password, passwordHash)
 
     if (!compareUserPass) {
       throw new UnauthorizedException()
     }
 
-    return userData
+    const payload = { sub: id, userData }
+    return {
+      access_token: await this.jwtService.signAsync(payload)
+    }
   }
 }
