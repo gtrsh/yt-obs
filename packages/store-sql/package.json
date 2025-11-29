@@ -5,9 +5,10 @@
     ".": "./src/index.ts"
   },
   "devDependencies": {
-    "prisma": "^6.18.0"
+    "prisma": "^6.19.0"
   },
   "dependencies": {
-    "@prisma/client": "^6.18.0"
+    "@prisma/client": "^6.19.0",
+    "typescript": "^5.9.3"
   }
 }

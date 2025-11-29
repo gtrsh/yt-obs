@@ -6,7 +6,7 @@ export class AppService {
   private readonly logger = new Logger(AppService.name)
 
   constructor(
-    private prismaService: PrismaService
+    private prismaService: PrismaService,
   ) {}
 
   async getHello(): Promise<string[]> {

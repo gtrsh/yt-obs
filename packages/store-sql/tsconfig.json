@@ -2,6 +2,12 @@
   "extends": "@yt-obs/config-typescript/tsconfig.server.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "baseUrl": "./"
-  }
+    "baseUrl": "./",
+    "rootDir": ".",
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "generated/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

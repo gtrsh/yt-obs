@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core'
+import { VersioningType } from '@nestjs/common'
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -15,7 +16,10 @@ const bootstrap = async () => {
     fastifyAdapter,
     { bufferLogs: true },
   )
+
   app.useLogger(app.get(Logger))
+  app.setGlobalPrefix('api')
+  app.enableVersioning({ type: VersioningType.URI })
 
   await app.listen(process.env.PORT ?? 3000)
 
