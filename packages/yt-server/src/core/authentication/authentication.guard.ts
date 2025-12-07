@@ -4,7 +4,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 
-import { IS_PUBLIC_KEY } from './authenticate.decorator.js'
+import { IS_PUBLIC_KEY } from './authentication.decorator.js'
 import { jwt } from './constants.js'
 
 @Injectable()

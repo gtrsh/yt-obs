@@ -1,11 +1,11 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common'
 
-import { AuthenticateService } from './authenticate.service.js'
+import { AuthenticationService } from './authentication.service.js'
 
 @Controller({ path: 'auth', version: '1' })
-export class AuthenticateController {
+export class AuthenticationController {
   constructor(
-    private authService: AuthenticateService,
+    private authService: AuthenticationService,
   ) {}
 
   @HttpCode(HttpStatus.OK)

@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt'
 import { PrismaService } from '../index.js'
 
 @Injectable()
-export class AuthenticateService {
+export class AuthenticationService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
@@ -28,7 +28,7 @@ export class AuthenticateService {
       throw new UnauthorizedException()
     }
 
-    const payload = { sub: id, userData }
+    const payload = { sub: id, ...userData }
     return {
       access_token: await this.jwtService.signAsync(payload)
     }

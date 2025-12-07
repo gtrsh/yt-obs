@@ -1,1 +1,1 @@
-export { Public } from './authenticate/authenticate.decorator.js'
+export { Public } from './authentication/authentication.decorator.js'

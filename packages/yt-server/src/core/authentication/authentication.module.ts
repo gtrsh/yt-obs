@@ -5,9 +5,9 @@ import { JwtModule } from '@nestjs/jwt'
 import { PrismaModule } from '../index.js'
 import { jwt } from './constants.js'
 
-import { AuthenticateService } from './authenticate.service.js'
-import { AuthenticateController } from './authenticate.controller.js'
-import { AuthGuard } from './authenticate.guard.js'
+import { AuthenticationService } from './authentication.service.js'
+import { AuthenticationController } from './authentication.controller.js'
+import { AuthGuard } from './authentication.guard.js'
 
 @Module({
   imports: [
@@ -20,12 +20,12 @@ import { AuthGuard } from './authenticate.guard.js'
     })
   ],
   providers: [
-    AuthenticateService,
+    AuthenticationService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
   ],
-  controllers: [AuthenticateController]
+  controllers: [AuthenticationController]
 })
-export class AuthenticateModule {}
+export class AuthenticationModule {}
