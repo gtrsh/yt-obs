@@ -8,6 +8,7 @@ import { jwt } from './constants.js'
 import { AuthenticationService } from './authentication.service.js'
 import { AuthenticationController } from './authentication.controller.js'
 import { AuthGuard } from './authentication.guard.js'
+import { RolesGuard } from './authorization.guard.js'
 
 @Module({
   imports: [
@@ -25,6 +26,10 @@ import { AuthGuard } from './authentication.guard.js'
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    }
   ],
   controllers: [AuthenticationController]
 })
