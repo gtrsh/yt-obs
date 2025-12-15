@@ -5,6 +5,9 @@ import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '../index.js'
 
+const salt = "SALT-DEV" // TODO: Get from .env file
+const rounds = Number("10") // TODO: Also get from .env file, string for now cause be parsed from .env
+
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -22,7 +25,7 @@ export class AuthenticationService {
     }
 
     const { password: passwordHash, id, ...userData } = user
-    const compareUserPass = await bcrypt.compare(password, passwordHash)
+    const compareUserPass = await bcrypt.compare(password.concat(salt), passwordHash)
 
     if (!compareUserPass) {
       throw new UnauthorizedException()
@@ -32,5 +35,18 @@ export class AuthenticationService {
     return {
       access_token: await this.jwtService.signAsync(payload)
     }
+  }
+
+  async signup(username: string, password: string) {
+    const passwordHash = await bcrypt.hash(password.concat(salt), rounds)
+    const user = await this.prismaService.user.create({
+      data: {
+        name: username,
+        password: passwordHash,
+      },
+      omit: { password: true },
+    })
+
+    return user
   }
 }

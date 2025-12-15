@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core'
 
 import { Role } from '@yt-obs/store-sql'
-import { ROLES_KEY } from './authorization.decorator.js'
+import { ROLES_KEY, PUBLIC_ROLE_KEY } from './authorization.decorator.js'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -15,8 +15,14 @@ export class RolesGuard implements CanActivate {
       ROLES_KEY,
       context.getHandler()
     ) ?? []
+    const publicRole = this.reflector.getAllAndOverride<boolean>(PUBLIC_ROLE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ])
 
-    console.log(roles)
+    if (publicRole) {
+      return true
+    }
 
     const request = context.switchToHttp().getRequest()
     const user = request.user
