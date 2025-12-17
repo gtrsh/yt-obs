@@ -2,14 +2,15 @@ import { FastifyRequest } from 'fastify'
 
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
 import { IS_PUBLIC_KEY } from './authentication.decorator.js'
-import { jwt } from './constants.js'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
+    private configService: ConfigService,
     private jwtService: JwtService,
     private reflector: Reflector,
   ) {}
@@ -32,7 +33,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, { secret: jwt.secret })
+      const payload = await this.jwtService.verifyAsync(token, { secret: this.jwtSecret })
 
       request['user'] = payload
     } catch {
@@ -45,5 +46,9 @@ export class AuthGuard implements CanActivate {
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? []
     return type === 'Bearer' ? token : undefined
+  }
+
+  get jwtSecret() {
+    return this.configService.get('YTOBS_JWT_SECRET')
   }
 }

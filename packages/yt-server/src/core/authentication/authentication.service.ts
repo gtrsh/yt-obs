@@ -1,16 +1,15 @@
 import bcrypt from 'bcrypt'
 
 import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
 import { PrismaService } from '../index.js'
 
-const salt = "SALT-DEV" // TODO: Get from .env file
-const rounds = Number("10") // TODO: Also get from .env file, string for now cause be parsed from .env
-
 @Injectable()
 export class AuthenticationService {
   constructor(
+    private configService: ConfigService,
     private prismaService: PrismaService,
     private jwtService: JwtService,
   ) {}
@@ -25,7 +24,7 @@ export class AuthenticationService {
     }
 
     const { password: passwordHash, id, ...userData } = user
-    const compareUserPass = await bcrypt.compare(password.concat(salt), passwordHash)
+    const compareUserPass = await bcrypt.compare(password.concat(this.salt), passwordHash)
 
     if (!compareUserPass) {
       throw new UnauthorizedException()
@@ -38,7 +37,7 @@ export class AuthenticationService {
   }
 
   async signup(username: string, password: string) {
-    const passwordHash = await bcrypt.hash(password.concat(salt), rounds)
+    const passwordHash = await bcrypt.hash(password.concat(this.salt), this.hashRounds)
     const user = await this.prismaService.user.create({
       data: {
         name: username,
@@ -48,5 +47,13 @@ export class AuthenticationService {
     })
 
     return user
+  }
+
+  get salt() {
+    return this.configService.get('YTOBS_SALT')
+  }
+
+  get hashRounds() {
+    return this.configService.get('YTOBS_HASH_ROUND')
   }
 }

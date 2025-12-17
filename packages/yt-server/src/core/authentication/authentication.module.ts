@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 
 import { PrismaModule } from '../index.js'
-import { jwt } from './constants.js'
 
 import { AuthenticationService } from './authentication.service.js'
 import { AuthenticationController } from './authentication.controller.js'
@@ -13,11 +13,14 @@ import { RolesGuard } from './authorization.guard.js'
 @Module({
   imports: [
     PrismaModule,
-    JwtModule.register({
-      secret: jwt.secret,
-      signOptions: {
-        expiresIn: '1Day',
-      },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get('YTOBS_JWT_SECRET'),
+        signOptions: {
+          expiresIn: config.get('YTOBS_JWT_EXPIRES')
+        }
+      })
     })
   ],
   providers: [
