@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Role } from '@yt-obs/store-sql'
 
 import { AppService } from './app.service.js'
@@ -8,10 +9,17 @@ import { Roles } from './core/decorators.js'
 // TODO: remove
 @Controller({ path: 'service', version: '1' })
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private configService: ConfigService,
+    private readonly appService: AppService
+  ) {}
 
   @Get()
   getHello(): unknown {
+    const binYt = this.configService.get('ytdlp-bin')
+    const binNode = this.configService.get('nodejs-bin')
+    // return [binNode, binYt]
+
     return this.appService.getHello()
   }
 
