@@ -5,6 +5,7 @@ import { LoggerModule } from 'pino-nestjs'
 import { AuthenticationModule } from './core/index.js'
 import { PrismaModule } from './core/index.js'
 import { envConfig } from './core/config/env.config.js'
+import { loggerConfig } from './core/config/logger.config.js'
 
 import { AppController } from './app.controller.js'
 import { AppService } from './app.service.js'
@@ -14,7 +15,7 @@ import { AppService } from './app.service.js'
     AuthenticationModule,
     ConfigModule.forRoot(envConfig),
     PrismaModule,
-    LoggerModule.forRoot(),
+    LoggerModule.forRoot(loggerConfig),
   ],
   controllers: [AppController],
   providers: [AppService],
