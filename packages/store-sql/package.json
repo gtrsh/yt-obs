@@ -2,13 +2,22 @@
   "name": "@yt-obs/store-sql",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "build": "prisma generate && tsc"
   },
   "devDependencies": {
-    "prisma": "^6.19.0"
+    "prisma": "^7.3.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.0",
-    "typescript": "^5.9.3"
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "pg": "^8.17.2"
   }
 }
