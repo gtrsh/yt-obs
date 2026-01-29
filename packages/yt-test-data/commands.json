@@ -1,0 +1,4 @@
+[
+  "yt-dlp --js-runtimes node:$(which node) --dump-single-json --flat-playlist 'https://www.youtube.com/@OnigiriScience/videos'",
+  "yt-dlp --js-runtimes node:$(which node) --dump-single-json --flat-playlist --extractor-args 'youtube:lang=ru' 'https://www.youtube.com/@OnigiriScience/videos'"
+]
