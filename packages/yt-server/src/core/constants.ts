@@ -1,0 +1,1 @@
+export const CHANNEL_QUEUE = 'CHANNEL_QUEUE'

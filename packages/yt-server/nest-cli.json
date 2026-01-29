@@ -7,5 +7,19 @@
   },
   "compilerOptions": {
     "deleteOutDir": true
+  },
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "entryFile": "main"
+    },
+    "worker": {
+      "type": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "entryFile": "worker"
+    }
   }
 }
