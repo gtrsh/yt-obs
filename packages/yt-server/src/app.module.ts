@@ -7,9 +7,6 @@ import { PrismaModule } from './core/index.js'
 import { envConfig } from './core/config/env.config.js'
 import { loggerConfig } from './core/config/logger.config.js'
 
-import { AppController } from './app.controller.js'
-import { AppService } from './app.service.js'
-
 @Module({
   imports: [
     AuthenticationModule,
@@ -17,7 +14,5 @@ import { AppService } from './app.service.js'
     PrismaModule,
     LoggerModule.forRoot(loggerConfig),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
