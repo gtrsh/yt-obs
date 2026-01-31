@@ -1,1 +1,1 @@
-export const CHANNEL_QUEUE = 'CHANNEL_QUEUE'
+export const QUEUE_CHANNEL = 'QUEUE_CHANNEL'
