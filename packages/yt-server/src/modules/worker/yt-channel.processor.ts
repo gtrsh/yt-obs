@@ -19,7 +19,7 @@ export class ChannelProcessor extends WorkerHost {
   }
 
   async process(job: Job) {
-    const { url } = job.data
+    const { url, type: playlistType } = job.data
 
     this.logger.log(`Processing channel: ${url}`)
     this.logger.log(job.data)
@@ -32,20 +32,24 @@ export class ChannelProcessor extends WorkerHost {
       this.logger.log(ytdlpBin)
       this.logger.log(nodejsBin)
 
-      // const { stdout } = await execa(ytdlpBin, [
-      //   '--dump-single-json',
-      //   '--flat-playlist',
-      //   '--extractor-args', 'youtube:lang=ru',
-      //   '--js-runtimes', `node:${nodejsBin}`,
-      //   url,
-      // ])
-
-      const result = await execa('echo', [
-        url
+      const result = await execa(ytdlpBin, [
+        '--dump-single-json',
+        '--flat-playlist',
+        '--extractor-args', 'youtube:lang=ru',
+        '--js-runtimes', `node:${nodejsBin}`,
+        `${url}/${playlistType}`,
       ])
 
-      this.logger.log(`Execa code: ${result.exitCode}`)
-      this.logger.log(`Execa stdout: ${result.stdout}`)
+      const ytdlpData = JSON.parse(result.stdout)
+      const { entries: channelVideos, ...channelInfo } = ytdlpData
+
+      const { id } = await this.prisma.channel.create({
+        data: {
+          url, data_type: playlistType, info: channelInfo, data: channelVideos,
+        }
+      })
+
+      this.logger.log(`Data channel processing complete: ${id}`)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err)
       this.logger.error(message)

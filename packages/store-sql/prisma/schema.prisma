@@ -25,3 +25,17 @@ model User {
 
   @@map("user")
 }
+
+model Channel {
+  id        String  @id @default(uuid(7)) @db.Uuid
+  url       String
+  info      Json?
+  data      Json?
+  data_type String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("channel")
+}

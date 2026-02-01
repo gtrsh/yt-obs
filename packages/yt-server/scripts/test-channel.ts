@@ -14,7 +14,7 @@ if (!url) {
   process.exit(1)
 }
 
-await queue.add('channel', { url })
+await queue.add('channel', { url, type: 'videos' })
 
 console.log(`Added job with url: ${url}`)
 
