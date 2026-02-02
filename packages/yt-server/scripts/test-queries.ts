@@ -6,3 +6,15 @@ const adapter = new PrismaPg({
 
 const client = new PrismaClient({ adapter, log: ['query'] })
 
+// const channels = await client.channel.findFirst({
+//   include: {
+//     channelInfo: {
+//       select: {
+//         info: true
+//       }
+//     }
+//   }
+// })
+// console.log(channels)
+
+await client.$disconnect()
