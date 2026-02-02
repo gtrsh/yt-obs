@@ -5,7 +5,7 @@ const connection = {
   port: Number(process.env.YTOBS_BULL_PORT),
 }
 
-const queue = new Queue('QUEUE_CHANNEL', { connection })
+const queue = new Queue('QUEUE_CHANNEL_CREATE', { connection })
 
 const url = process.argv.at(2)
 

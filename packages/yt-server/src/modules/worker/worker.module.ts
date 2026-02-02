@@ -6,7 +6,10 @@ import { LoggerModule } from 'pino-nestjs'
 import { PrismaModule } from '../../core/index.js'
 import { envConfig } from '../../core/config/env.config.js'
 import { loggerConfig } from '../../core/config/logger.config.js'
-import { QUEUE_CHANNEL } from '../../core/constants.js'
+import {
+  QUEUE_CHANNEL_CREATE,
+  QUEUE_CHANNEL_UPDATE,
+} from '../../core/constants.js'
 
 import { ChannelProcessor } from './yt-channel.processor.js'
 
@@ -24,7 +27,8 @@ import { ChannelProcessor } from './yt-channel.processor.js'
         },
       }),
     }),
-    BullModule.registerQueue({ name: QUEUE_CHANNEL }),
+    BullModule.registerQueue({ name: QUEUE_CHANNEL_CREATE }),
+    BullModule.registerQueue({ name: QUEUE_CHANNEL_UPDATE }),
   ],
   providers: [
     ChannelProcessor,

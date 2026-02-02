@@ -5,9 +5,9 @@ import { Job, Queue } from 'bullmq'
 import { execa } from 'execa'
 
 import { PrismaService } from '../../core/index.js'
-import { QUEUE_CHANNEL } from '../../core/constants.js'
+import { QUEUE_CHANNEL_CREATE } from '../../core/constants.js'
 
-@Processor(QUEUE_CHANNEL)
+@Processor(QUEUE_CHANNEL_CREATE)
 export class ChannelProcessor extends WorkerHost {
   private readonly logger = new Logger(ChannelProcessor.name)
 
