@@ -19,7 +19,7 @@ export class ChannelProcessor extends WorkerHost {
   }
 
   async process(job: Job) {
-    const { url, type: playlistType } = job.data
+    const { url, playlistType } = job.data
 
     this.logger.log(`Processing channel: ${url}`)
     this.logger.log(job.data)
@@ -45,7 +45,7 @@ export class ChannelProcessor extends WorkerHost {
 
       const { id } = await this.prisma.channel.create({
         data: {
-          url, dataType: playlistType, data: channelVideos,
+          url, playlistType, data: channelVideos,
           channelInfo: {
             create: {
               info: channelInfo

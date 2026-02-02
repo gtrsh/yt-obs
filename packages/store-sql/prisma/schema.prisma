@@ -27,16 +27,16 @@ model User {
 }
 
 model Channel {
-  id       String  @id @default(uuid(7)) @db.Uuid
-  url      String
-  data     Json?
-  dataType String? @map("data_type")
+  id           String  @id @default(uuid(7)) @db.Uuid
+  url          String
+  data         Json?
+  playlistType String? @map("playlist_type")
+
+  channelInfo ChannelInfo?
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
-
-  channelInfo ChannelInfo?
 
   @@map("channel")
 }
@@ -45,12 +45,12 @@ model ChannelInfo {
   id   String @id @default(uuid(7)) @db.Uuid
   info Json?  @db.JsonB
 
+  channelId String  @unique @map("channel_id") @db.Uuid
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
-
-  channelId String  @unique @map("channel_id") @db.Uuid
-  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   @@map("channel_info")
 }
