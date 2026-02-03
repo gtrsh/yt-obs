@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common'
 
-@Module({})
+import { ChannelController } from './yt-channels.controller.js'
+
+@Module({
+  controllers: [ChannelController],
+})
 export class YtChannelsModule {}
