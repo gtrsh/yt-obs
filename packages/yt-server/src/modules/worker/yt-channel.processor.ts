@@ -45,14 +45,23 @@ export class ChannelProcessor extends WorkerHost {
 
       const { id } = await this.prisma.channel.create({
         data: {
-          url, playlistType, data: channelVideos,
+          url,
           channelInfo: {
             create: {
-              info: channelInfo
+              info: channelInfo,
+            }
+          },
+          channelData: {
+            create: {
+              playlistType,
+              data: channelVideos,
             }
           }
         },
-        include: { channelInfo: true }
+        include: {
+          channelInfo: true,
+          channelData: true,
+        }
       })
 
       this.logger.log(`Data channel processing complete: ${id}`)

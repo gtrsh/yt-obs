@@ -15,6 +15,7 @@ const YoutubeChannelSchema = z.object({
   playlistType: PlaylistVariantsSchema.default('videos').optional()
 })
 
+export type YoutubeChannel = z.infer<typeof YoutubeChannelSchema>
 export {
   PlaylistVariantsSchema,
   YoutubeChannelUrlSchema,
