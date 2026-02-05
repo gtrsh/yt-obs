@@ -43,29 +43,29 @@ export class ChannelProcessor extends WorkerHost {
       const ytdlpData = JSON.parse(result.stdout)
       const { entries: channelVideos, ...channelInfo } = ytdlpData
 
-      // const { id } = await this.prisma.channel.create({
-      //   data: {
-      //     url,
-      //     channelInfo: {
-      //       create: {
-      //         info: channelInfo,
-      //       }
-      //     },
-      //     channelData: {
-      //       create: {
-      //         playlistType,
-      //         data: channelVideos,
-      //       }
-      //     }
-      //   },
-      //   include: {
-      //     channelInfo: true,
-      //     channelData: true,
-      //   }
-      // })
-      //
+      const { id } = await this.prisma.channel.create({
+        data: {
+          url,
+          info: {
+            create: {
+              info: channelInfo,
+            }
+          },
+          data: {
+            create: {
+              playlistType,
+              data: channelVideos,
+              isCurrent: true,
+            }
+          }
+        },
+        include: {
+          info: true,
+          data: true,
+        }
+      })
 
-      // this.logger.log(`Data channel processing complete: ${id}`)
+      this.logger.log(`Data channel processing complete: ${id}`)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err)
       this.logger.error(message)
