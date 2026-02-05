@@ -52,13 +52,9 @@ model Channel {
   url    String        @unique
   status ChannelStatus @default(PENDING)
 
-  currentDataId String?      @unique @map("current_data_id") @db.Uuid
-  currentData   ChannelData? @relation("CurrentData", fields: [currentDataId], references: [id])
-
   info  ChannelInfo?
-  data  ChannelData[] @relation("ChannelData")
+  data  ChannelData[]
   tasks ChannelTask[]
-
   users UserChannel[]
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -87,11 +83,10 @@ model ChannelData {
   id           String  @id @default(uuid(7)) @db.Uuid
   data         Json?   @db.JsonB
   playlistType String? @map("playlist_type")
+  isCurrent    Boolean @default(false) @map("is_current")
 
   channelId String  @map("channel_id") @db.Uuid
-  channel   Channel @relation("ChannelData", fields: [channelId], references: [id], onDelete: Cascade)
-
-  currentForChannel Channel? @relation("CurrentData")
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   taskId String?      @unique @map("task_id") @db.Uuid
   task   ChannelTask? @relation(fields: [taskId], references: [id], onDelete: SetNull)
