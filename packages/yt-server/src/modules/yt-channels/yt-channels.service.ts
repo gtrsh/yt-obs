@@ -39,7 +39,6 @@ export class ChannelService {
 
       const channelTask = await tx.channelTask.create({
         data: {
-          // status: PENDING
           type: TaskType.CREATE,
           channelId: newChannel.id
         }
