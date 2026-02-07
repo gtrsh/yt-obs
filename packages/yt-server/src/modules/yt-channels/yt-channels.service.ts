@@ -112,7 +112,47 @@ export class ChannelService {
     return data?.info ?? null
   }
 
-  async findDataAll() {}
+  async findDataAll(channelId: string, userId: string) {
+    return this.prisma.channelData.findMany({
+      select: {
+        id: true, data: true, playlistType: true, createdAt: true, updatedAt: true
+      },
+      where: {
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+  }
 
-  async findDataById() {}
+  async findDataById(channelId: string, dataId: string, userId: string) {
+    return this.prisma.channelData.findFirst({
+      select: {
+        id: true, data: true, playlistType: true, createdAt: true, updatedAt: true
+      },
+      where: {
+        id: dataId,
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+  }
+
+  async findDataCurrent(channelId: string, userId: string) {
+    return this.prisma.channelData.findFirst({
+      select: {
+        id: true, data: true, playlistType: true, createdAt: true, updatedAt: true
+      },
+      where: {
+        isCurrent: true,
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+  }
 }

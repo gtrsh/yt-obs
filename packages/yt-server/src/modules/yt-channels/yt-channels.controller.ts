@@ -73,4 +73,56 @@ export class ChannelController {
 
     return channelInfo
   }
+
+  @Get(':id/data')
+  @Roles(Role.USER)
+  async findDataCurrent(
+    @Req() req,
+    @Param('id') id: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelData = await this.channelService.findDataCurrent(id, userId)
+
+    if (!channelData) {
+      throw new NotFoundException()
+    }
+
+    return channelData
+  }
+
+  @Get(':id/data/history')
+  @Roles(Role.USER)
+  async findDataAll(
+    @Req() req,
+    @Param('id') id: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelDataHistory = await this.channelService.findDataAll(id, userId)
+
+    if (!channelDataHistory) {
+      throw new NotFoundException()
+    }
+
+    return channelDataHistory
+  }
+
+  @Get(':id/data/:dataId')
+  @Roles(Role.USER)
+  async findDataById(
+    @Req() req,
+    @Param('id') id: string,
+    @Param('dataId') dataId: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelDataItem = await this.channelService.findDataById(id, dataId, userId)
+
+    if (!channelDataItem) {
+      throw new NotFoundException()
+    }
+
+    return channelDataItem
+  }
 }
