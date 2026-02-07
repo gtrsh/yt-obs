@@ -155,4 +155,33 @@ export class ChannelService {
       },
     })
   }
+
+  async findTaskAll(channelId: string, userId: string) {
+    return this.prisma.channelTask.findMany({
+      select: {
+        id: true, type: true, status: true, error: true, createdAt: true, updatedAt: true
+      },
+      where: {
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+  }
+
+  async findTaskById(channelId: string, taskId: string, userId: string) {
+    return this.prisma.channelTask.findFirst({
+      select: {
+        id: true, type: true, status: true, error: true, createdAt: true, updatedAt: true
+      },
+      where: {
+        id: taskId,
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+  }
 }

@@ -125,4 +125,39 @@ export class ChannelController {
 
     return channelDataItem
   }
+
+  @Get(':id/task')
+  @Roles(Role.USER)
+  async findTaskAll(
+    @Req() req,
+    @Param('id') id: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelTasks = await this.channelService.findTaskAll(id, userId)
+
+    if (!channelTasks) {
+      throw new NotFoundException()
+    }
+
+    return channelTasks
+  }
+
+  @Get(':id/task/:taskId')
+  @Roles(Role.USER)
+  async findTaskById(
+    @Req() req,
+    @Param('id') id: string,
+    @Param('taskId') taskId: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelTaskItem = await this.channelService.findTaskById(id, taskId ,userId)
+
+    if (!channelTaskItem) {
+      throw new NotFoundException()
+    }
+
+    return channelTaskItem
+  }
 }
