@@ -11,7 +11,7 @@ import {
   ConflictException,
   Res,
 } from '@nestjs/common'
-import { Role } from '@yt-obs/store-sql'
+import { Role, ChannelStatus } from '@yt-obs/store-sql'
 
 import { Roles } from '../../core/decorators.js'
 import { YoutubeChannelSchema } from '../../core/schemas/yt-channel.schema.js'
@@ -44,5 +44,16 @@ export class ChannelController {
     }
 
     return channel
+  }
+
+  @Get()
+  @Roles(Role.USER)
+  async findAll(
+    @Req() req,
+    @Query('status') status?: ChannelStatus
+  ) {
+    const userId = req.user.sub as string
+
+    return this.channelService.findAll(userId, status)
   }
 }

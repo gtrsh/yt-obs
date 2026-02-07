@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Queue } from 'bullmq'
-import { TaskType } from '@yt-obs/store-sql'
+import { TaskType, ChannelStatus } from '@yt-obs/store-sql'
 
 import { PrismaService } from '../../core/index.js'
 import { QUEUE_CHANNEL_CREATE } from '../../core/constants.js'
@@ -84,7 +84,20 @@ export class ChannelService {
 
   async update() {}
 
-  async findAll() {}
+  async findAll(userId: string, status?: ChannelStatus) {
+    const data = await this.prisma.userChannel.findMany({
+      where: { userId },
+      include: { channel: true },
+    })
+
+    if (status) {
+      return data
+        .map(({ channel }) => channel)
+        .filter((channel) => channel.status === status)
+    }
+
+    return data.map(({ channel }) => channel)
+  }
 
   async findById() {}
 
