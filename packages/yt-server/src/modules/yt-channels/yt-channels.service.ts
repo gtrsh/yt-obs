@@ -99,7 +99,18 @@ export class ChannelService {
     return data.map(({ channel }) => channel)
   }
 
-  async findById() {}
+  async findById(channelId: string, userId: string) {
+    const data = await this.prisma.channelInfo.findFirst({
+      where: {
+        channel: {
+          id: channelId,
+          users: { some: { userId } },
+        },
+      },
+    })
+
+    return data?.info ?? null
+  }
 
   async findDataAll() {}
 

@@ -50,10 +50,27 @@ export class ChannelController {
   @Roles(Role.USER)
   async findAll(
     @Req() req,
-    @Query('status') status?: ChannelStatus
+    @Query('status') status?: ChannelStatus,
   ) {
     const userId = req.user.sub as string
 
     return this.channelService.findAll(userId, status)
+  }
+
+  @Get(':id')
+  @Roles(Role.USER)
+  async findById(
+    @Req() req,
+    @Param('id') id: string,
+  ) {
+    const userId = req.user.sub as string
+
+    const channelInfo = await this.channelService.findById(id, userId)
+
+    if (!channelInfo) {
+      throw new NotFoundException()
+    }
+
+    return channelInfo
   }
 }
