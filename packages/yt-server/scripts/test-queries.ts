@@ -45,4 +45,23 @@ const client = new PrismaClient({ adapter, log: ['query'] })
 // const info = data?.info ?? null
 // console.log(info)
 
+// const userId = process.argv.at(2)
+// const channelId = process.argv.at(3)
+//
+// const data = await client.channelData.findFirst({
+//   select: { id: true, data: true, playlistType: true, createdAt: true, updatedAt: true },
+//   where: {
+//     isCurrent: true,
+//     channel: {
+//       id: channelId,
+//       users: {
+//         some: {
+//           userId
+//         }
+//       }
+//     }
+//   }
+// })
+// console.log(data)
+
 await client.$disconnect()
