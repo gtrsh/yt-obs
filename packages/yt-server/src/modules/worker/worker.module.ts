@@ -11,7 +11,8 @@ import {
   QUEUE_CHANNEL_UPDATE,
 } from '../../core/constants.js'
 
-import { ChannelProcessor } from './yt-channel.processor.js'
+import { ChannelCreateProcessor } from './yt-channel.create.processor.js'
+import { ChannelUpdateProcessor } from './yt-channel.update.processor.js'
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { ChannelProcessor } from './yt-channel.processor.js'
     BullModule.registerQueue({ name: QUEUE_CHANNEL_UPDATE }),
   ],
   providers: [
-    ChannelProcessor,
+    ChannelCreateProcessor,
+    ChannelUpdateProcessor,
   ]
 })
 export class WorkerModule {}

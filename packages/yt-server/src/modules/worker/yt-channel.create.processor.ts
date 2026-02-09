@@ -9,8 +9,8 @@ import { PrismaService } from '../../core/index.js'
 import { QUEUE_CHANNEL_CREATE } from '../../core/constants.js'
 
 @Processor(QUEUE_CHANNEL_CREATE)
-export class ChannelProcessor extends WorkerHost {
-  private readonly logger = new Logger(ChannelProcessor.name)
+export class ChannelCreateProcessor extends WorkerHost {
+  private readonly logger = new Logger(ChannelCreateProcessor.name)
 
   constructor(
     private prisma: PrismaService,
