@@ -1,4 +1,4 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq'
+import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Job } from 'bullmq'
@@ -112,5 +112,12 @@ export class ChannelCreateProcessor extends WorkerHost {
 
       this.logger.error(`Failed channel processing: ${url}`)
     }
+  }
+
+  @OnWorkerEvent('failed')
+  async handler(job: Job) {
+    this.logger.log('Task CHANNEL_CREATE failed:')
+    this.logger.log(job.id)
+    this.logger.log(job.data)
   }
 }
