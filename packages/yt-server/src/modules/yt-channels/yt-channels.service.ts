@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Queue } from 'bullmq'
-import { TaskType, ChannelStatus } from '@yt-obs/store-sql'
+import { TaskType, TaskStatus, ChannelStatus } from '@yt-obs/store-sql'
 
 import { PrismaService } from '../../core/index.js'
-import { QUEUE_CHANNEL_CREATE } from '../../core/constants.js'
+import { QUEUE_CHANNEL_CREATE, QUEUE_CHANNEL_UPDATE } from '../../core/constants.js'
 
 @Injectable()
 export class ChannelService {
@@ -13,6 +13,7 @@ export class ChannelService {
   constructor(
     private prisma: PrismaService,
     @InjectQueue(QUEUE_CHANNEL_CREATE) private channelQueueCreate: Queue,
+    @InjectQueue(QUEUE_CHANNEL_UPDATE) private channelQueueUpdate: Queue,
   ) {}
 
   async create(channelInfoProps, userId) {
@@ -82,7 +83,86 @@ export class ChannelService {
     }
   }
 
-  async update() {}
+  async update(channelInfoProps, channelId: string, userId: string) {
+    const { playlistType } = channelInfoProps
+
+    const dataDb = await this.prisma.userChannel.findFirst({
+      where: { channelId, userId },
+      include: { channel: true },
+    })
+
+    if (!dataDb) {
+      return null
+    }
+    const { channel } = dataDb
+
+    const activeUpdate = await this.prisma.channelTask.findFirst({
+      where: {
+        channelId,
+        status: { in: [TaskStatus.PROCESSING, TaskStatus.PENDING]},
+      }
+    })
+
+    if (activeUpdate) {
+      return { channel, conflict: true }
+    }
+
+    const {
+      channelDataCurrentId,
+      channelTaskId,
+      channelDataId,
+    } = await this.prisma.$transaction(async (tx) => {
+      await tx.channel.update({
+        where: { id: channelId },
+        data: {
+          status: ChannelStatus.UPDATING,
+          updatedAt: new Date(),
+        },
+      })
+      this.logger.log(`Update channel status [UPDATING]: ${channelId}`)
+
+      const channelTask = await tx.channelTask.create({
+        data: {
+          type: TaskType.UPDATE,
+          channelId,
+        },
+      })
+      this.logger.log(`Craeted task for update: ${channelTask.id}`)
+
+      const channelData = await tx.channelData.create({
+        data: {
+          taskId: channelTask.id,
+          channelId,
+          playlistType,
+        }
+      })
+      this.logger.log(`Craeted data row for update: ${channelData.id}`)
+
+      const channelDataCurrent = await tx.channelData.findFirst({
+        where: {
+          channelId,
+          isCurrent: true,
+        },
+        select: { id: true }
+      })
+
+      return {
+        channelDataCurrentId: channelDataCurrent!.id,
+        channelTaskId: channelTask.id,
+        channelDataId: channelData.id,
+      }
+    })
+
+    await this.channelQueueUpdate.add('channel-update', {
+      url: `${channel.url}/${playlistType}`,
+      channelId,
+      channelDataCurrentId,
+      channelTaskId,
+      channelDataId,
+    })
+
+    return { channel, conflict: false }
+  }
 
   async findAll(userId: string, status?: ChannelStatus) {
     const data = await this.prisma.userChannel.findMany({
