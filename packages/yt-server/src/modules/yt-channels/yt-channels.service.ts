@@ -33,7 +33,12 @@ export class ChannelService {
       return { channel: existChannel, created: false }
     }
 
-    const channel = await this.prisma.$transaction(async (tx) => {
+    const {
+      newChannel,
+      channelTask,
+      channelData,
+      channelInfo,
+    } = await this.prisma.$transaction(async (tx) => {
       const newChannel = await tx.channel.create({
         data: { url }
       })
@@ -66,19 +71,24 @@ export class ChannelService {
         }
       })
 
-      await this.channelQueueCreate.add('channel-create', {
-        url: `${url}/${playlistType}`,
-        channelId: newChannel.id,
-        channelTaskId: channelTask.id,
-        channelDataId: channelData.id,
-        channelInfoId: channelInfo.id,
-      })
+      return {
+        newChannel,
+        channelTask,
+        channelData,
+        channelInfo,
+      }
+    })
 
-      return newChannel
+    await this.channelQueueCreate.add('channel-create', {
+      url: `${url}/${playlistType}`,
+      channelId: newChannel.id,
+      channelTaskId: channelTask.id,
+      channelDataId: channelData.id,
+      channelInfoId: channelInfo.id,
     })
 
     return {
-      channel,
+      channel: newChannel,
       created: true,
     }
   }
