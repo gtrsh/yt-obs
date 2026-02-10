@@ -46,6 +46,33 @@ export class ChannelController {
     return channel
   }
 
+  @Post(':id/update')
+  @Roles(Role.USER)
+  async update(
+    @Req() req,
+    @Res({ passthrough: true }) res,
+    @Param('id') id: string,
+  ) {
+    const userId = req.user.sub as string
+    const STATIC_PROPS = { playlistType: 'videos' } // TODO: get from body, only video for now
+
+    const channelUpdate = await this.channelService.update(STATIC_PROPS, id, userId)
+
+    if (!channelUpdate) {
+      throw new NotFoundException()
+    }
+    const { channel, conflict } = channelUpdate
+
+    if (conflict) {
+      throw new ConflictException({
+        message: 'channel tasks in progress',
+        channelId: channel.id
+      })
+    }
+
+    return channel
+  }
+
   @Get()
   @Roles(Role.USER)
   async findAll(
