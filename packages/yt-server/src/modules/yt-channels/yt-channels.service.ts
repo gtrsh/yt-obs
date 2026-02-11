@@ -190,7 +190,7 @@ export class ChannelService {
   }
 
   async findById(channelId: string, userId: string) {
-    const data = await this.prisma.channelInfo.findFirst({
+    return this.prisma.channelInfo.findFirst({
       where: {
         channel: {
           id: channelId,
@@ -198,8 +198,6 @@ export class ChannelService {
         },
       },
     })
-
-    return data?.info ?? null
   }
 
   async findDataAll(channelId: string, userId: string) {
