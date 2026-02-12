@@ -118,11 +118,12 @@ export class ChannelService {
     }
 
     const {
+      channelUpd,
       channelDataCurrentId,
       channelTaskId,
       channelDataId,
     } = await this.prisma.$transaction(async (tx) => {
-      await tx.channel.update({
+      const channelUpd = await tx.channel.update({
         where: { id: channelId },
         data: {
           status: ChannelStatus.UPDATING,
@@ -157,6 +158,7 @@ export class ChannelService {
       })
 
       return {
+        channelUpd,
         channelDataCurrentId: channelDataCurrent!.id,
         channelTaskId: channelTask.id,
         channelDataId: channelData.id,
@@ -171,7 +173,7 @@ export class ChannelService {
       channelDataId,
     })
 
-    return { channel, conflict: false }
+    return { channel: channelUpd, conflict: false }
   }
 
   async findAll(userId: string, status?: ChannelStatus) {
