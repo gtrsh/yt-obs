@@ -205,7 +205,7 @@ export class ChannelService {
   async findDataAll(channelId: string, userId: string) {
     return this.prisma.channelData.findMany({
       select: {
-        id: true, data: true, playlistType: true, createdAt: true, updatedAt: true
+        id: true, playlistType: true, createdAt: true, updatedAt: true
       },
       where: {
         channel: {
