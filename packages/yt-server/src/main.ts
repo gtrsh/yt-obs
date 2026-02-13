@@ -14,7 +14,7 @@ const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     fastifyAdapter,
-    { bufferLogs: true },
+    { bufferLogs: true, cors: true },
   )
 
   app.useLogger(app.get(Logger))
