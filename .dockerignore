@@ -1,0 +1,21 @@
+# .dockerignore
+
+.idea
+
+.git
+.github
+.gitignore
+
+**/node_modules
+**/dist
+
+.env*
+*.log
+
+docker
+yt-test-data
+CLAUDE.md
+README.md
+scripts
+deploy-fe.sh
+package-template.json
