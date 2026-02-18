@@ -24,8 +24,10 @@ export class AuthenticationController {
   @PublicRole()
   @Post('signup')
   signup(@Body() body: { username: string, password: string }) {
-    const { username, password } = body
+    // const { username, password } = body
+    //
+    // return this.authService.signup(username, password)
 
-    return this.authService.signup(username, password)
+    return {}
   }
 }
