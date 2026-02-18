@@ -21,7 +21,7 @@ const bootstrap = async () => {
   app.setGlobalPrefix('api')
   app.enableVersioning({ type: VersioningType.URI })
 
-  await app.listen(process.env.PORT ?? 3000)
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0')
 
   process.on('SIGINT', async () => await app.close())
   process.on('SIGHUP', async () => await app.close())
