@@ -11,8 +11,6 @@ import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Chip from '@mui/material/Chip'
-import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 
 export function HomePage() {
@@ -171,73 +169,6 @@ export function HomePage() {
           </Typography>
         </Box>
 
-        <Divider className="mb-8" />
-
-        {/* Backlog */}
-        <Box className="mb-8">
-          <Typography variant="h5" fontWeight={600} gutterBottom>
-            Backlog
-          </Typography>
-
-          {/* Каналы */}
-          <Typography variant="subtitle1" fontWeight={600} className="mt-2">
-            Каналы
-          </Typography>
-          <List dense>
-            {[
-              { label: 'Проверка существования канала', done: true },
-              { label: 'Получение списка видео канала', done: true },
-              { label: 'Обновление списка видео канала', done: true },
-              { label: 'Diff списков видео', done: false },
-              { label: 'Поиск (advanced) по каналу и метаданным', done: false },
-            ].map((item) => (
-              <ListItem key={item.label} disableGutters sx={{ py: 0.25 }}>
-                <ListItemIcon sx={{ minWidth: 32 }}>
-                  {item.done
-                    ? <CheckBoxIcon color="primary" fontSize="small" />
-                    : <CheckBoxOutlineBlankIcon color="disabled" fontSize="small" />
-                  }
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  primaryTypographyProps={{ color: item.done ? 'text.primary' : 'text.secondary' }}
-                />
-              </ListItem>
-            ))}
-          </List>
-
-          {/* Видео */}
-          <Typography variant="subtitle1" fontWeight={600} className="mt-2">
-            Видео
-          </Typography>
-          <List dense>
-            {[
-              { label: 'Получение всей metadata по видео', done: false },
-              { label: 'Скачивание видео/аудио', done: false },
-              { label: 'Работа с видео/аудио при помощи ffmpeg', done: false },
-            ].map((item) => (
-              <ListItem key={item.label} disableGutters sx={{ py: 0.25 }}>
-                <ListItemIcon sx={{ minWidth: 32 }}>
-                  <CheckBoxOutlineBlankIcon color="disabled" fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={item.label} primaryTypographyProps={{ color: 'text.secondary' }} />
-              </ListItem>
-            ))}
-          </List>
-
-          {/* Сервис куки */}
-          <Typography variant="subtitle1" fontWeight={600} className="mt-2">
-            Прочее
-          </Typography>
-          <List dense>
-            <ListItem disableGutters sx={{ py: 0.25 }}>
-              <ListItemIcon sx={{ minWidth: 32 }}>
-                <CheckBoxOutlineBlankIcon color="disabled" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Сервис для получения/обновления cookies" primaryTypographyProps={{ color: 'text.secondary' }} />
-            </ListItem>
-          </List>
-        </Box>
 
       </Container>
     </div>
