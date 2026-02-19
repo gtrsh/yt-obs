@@ -21,7 +21,7 @@ const loginRoute = createRoute({
   path: '/login',
   beforeLoad: () => {
     if (isAuthenticated()) {
-      throw redirect({ to: '/' })
+      throw redirect({ to: '/channels' })
     }
   },
   component: LoginPage,
@@ -29,7 +29,7 @@ const loginRoute = createRoute({
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: '/channels',
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({ to: '/login' })
