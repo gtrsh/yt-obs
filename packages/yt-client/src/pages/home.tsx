@@ -50,9 +50,6 @@ export function HomePage() {
  \\  / / /_____/ / / / __ \\/ ___/ _ \\/ ___/ | / / _ \\/ ___/
  / / / /_____/ /_/ / /_/ (__  )  __/ /   | |/ /  __/ /
 /_/ /_/      \\____/_.___/____/\\___/_/    |___/\\___/_/`}</Box>
-          <Typography variant="h4" fontWeight={700} gutterBottom>
-            YT-Observer
-          </Typography>
           <Typography variant="subtitle1" color="text.secondary">
             Приложение для работы с YouTube при помощи yt-dlp без использования официального API
           </Typography>
