@@ -14,7 +14,10 @@ import ListItemText from '@mui/material/ListItemText'
 import Chip from '@mui/material/Chip'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
+import IconButton from '@mui/material/IconButton'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
 const SCREENSHOTS = [
   'https://s3.ru1.storage.beget.cloud/88e425097463-yt-obs-static-public/Screenshot%20From%202026-02-19%2016-17-03.png',
@@ -29,7 +32,13 @@ const SCREENSHOTS = [
 
 export function HomePage() {
   const navigate = useNavigate()
-  const [lightbox, setLightbox] = useState<string | null>(null)
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
+
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (lightboxIdx === null) return
+    if (e.key === 'ArrowRight') setLightboxIdx((i) => Math.min((i ?? 0) + 1, SCREENSHOTS.length - 1))
+    if (e.key === 'ArrowLeft') setLightboxIdx((i) => Math.max((i ?? 0) - 1, 0))
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -195,7 +204,7 @@ export function HomePage() {
                 component="img"
                 src={src}
                 alt={`Screenshot ${i + 1}`}
-                onClick={() => setLightbox(src)}
+                onClick={() => setLightboxIdx(i)}
                 sx={{
                   width: '100%',
                   aspectRatio: '16/9',
@@ -215,20 +224,38 @@ export function HomePage() {
       </Container>
 
       <Dialog
-        open={lightbox !== null}
-        onClose={() => setLightbox(null)}
+        open={lightboxIdx !== null}
+        onClose={() => setLightboxIdx(null)}
+        onKeyDown={handleKey}
         maxWidth="xl"
         fullWidth
-        slotProps={{ paper: { sx: { bgcolor: 'black' } } }}
+        slotProps={{ paper: { sx: { bgcolor: 'black', position: 'relative' } } }}
       >
         <DialogContent sx={{ p: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {lightbox && (
-            <Box
-              component="img"
-              src={lightbox}
-              onClick={() => setLightbox(null)}
-              sx={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain', cursor: 'zoom-out' }}
-            />
+          {lightboxIdx !== null && (
+            <>
+              <IconButton
+                onClick={() => setLightboxIdx((i) => Math.max((i ?? 0) - 1, 0))}
+                disabled={lightboxIdx === 0}
+                sx={{ position: 'absolute', left: 8, color: 'white', bgcolor: 'rgba(0,0,0,0.4)', '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' }, '&.Mui-disabled': { color: 'rgba(255,255,255,0.2)' } }}
+              >
+                <ArrowBackIosNewIcon />
+              </IconButton>
+              <Box
+                component="img"
+                src={SCREENSHOTS[lightboxIdx]}
+                alt={`Screenshot ${lightboxIdx + 1}`}
+                onClick={() => setLightboxIdx(null)}
+                sx={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain', cursor: 'zoom-out' }}
+              />
+              <IconButton
+                onClick={() => setLightboxIdx((i) => Math.min((i ?? 0) + 1, SCREENSHOTS.length - 1))}
+                disabled={lightboxIdx === SCREENSHOTS.length - 1}
+                sx={{ position: 'absolute', right: 8, color: 'white', bgcolor: 'rgba(0,0,0,0.4)', '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' }, '&.Mui-disabled': { color: 'rgba(255,255,255,0.2)' } }}
+              >
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </>
           )}
         </DialogContent>
       </Dialog>
